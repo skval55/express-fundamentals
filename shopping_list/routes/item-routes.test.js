@@ -8,7 +8,7 @@ let items = require("../fakeDb");
 let candy = { name: "gummies", price: 2.99 };
 
 beforeEach(function () {
-  items.push(candy);
+  items.push({ name: "gummies", price: 2.99 });
 });
 
 afterEach(function () {
@@ -19,6 +19,7 @@ afterEach(function () {
 describe("GET /items", function () {
   test("gets a list of all items", async function () {
     const resp = await request(app).get("/items");
+    console.log("1");
     expect(resp.statusCode).toBe(200);
 
     expect(resp.body).toEqual([candy]);
@@ -31,6 +32,7 @@ describe("POST /items", function () {
       name: "donuts",
       price: 5.99,
     });
+    console.log("2");
     expect(resp.statusCode).toBe(200);
 
     expect(resp.body).toEqual({
@@ -45,12 +47,15 @@ describe("POST /items", function () {
 describe("GET /items/:name", function () {
   test("gets item with name in url", async function () {
     const resp = await request(app).get(`/items/${candy.name}`);
+    console.log("3");
     expect(resp.statusCode).toBe(200);
+    console.log(items);
     console.log(candy);
-
+    console.log(resp.body);
     expect(resp.body).toEqual({ item: candy });
   });
   test("gets item with wrong name in url", async function () {
+    console.log("4");
     const resp = await request(app).get(`/items/chocolate`);
     expect(resp.statusCode).toBe(404);
   });
